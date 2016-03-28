@@ -15,10 +15,10 @@
  *如果省略第三个参数，则默认窗口移动依靠 left / top
  ******
  *@example
- *	new sohuHD.dragWin( $( '.dragme' ), $( '.dragArea' ) ,'left top' );
+ *	new dragWin( $( '.dragme' ), $( '.dragArea' ) ,'left top' );
  */
-( function( window, sohuHD, $ ){
-    sohuHD.dragWin = function( win, pullEle, referencePos ){
+( function( window, $ ){
+    dragWin = function( win, pullEle, referencePos ){
         var me = this;
 
         //start init arguments
@@ -225,4 +225,4 @@
 
         return me;
     }
-})( window, sohuHD, jQuery )
+})( window, jQuery )
