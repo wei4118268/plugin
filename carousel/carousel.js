@@ -1,4 +1,4 @@
-carousel = function (config, $focusEle) {
+var carousel = function (config, $focusEle) {
     var _config = {
         playStyle: 'hide',
         arrow: false,
@@ -10,7 +10,7 @@ carousel = function (config, $focusEle) {
     var me = this;
     _config = $.extend(_config, config);
 
-    var $picBox = $focusEle.children('.carousel-inner'),
+    var $picBox = $focusEle.children('.carousel-pics'),
         $picEles = $picBox.children('.item'),
         length = $picEles.length,
         $mapEles;
