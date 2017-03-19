@@ -28,7 +28,7 @@ var carousel = function (config, $focusEle) {
             time = _config.changeTime;
         $cEle.fadeOut(time);
         $tEle.fadeIn(time);
-        $cMEle.animate({width: "19px", backgroundColor: "#8bdbee"}, time, '', function () {
+        $cMEle.animate({width: "19px", backgroundColor: "#ffffff"}, time, '', function () {
             $(this).removeClass('active')
         });
         $tMEle.animate({width: "41px", backgroundColor: "#ffffff"}, time, '', function () {
