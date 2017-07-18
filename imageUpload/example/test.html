@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+<style>
+    #imgControl{
+        margin: 20px 20px;
+    }
+    .imageCell{
+        width: 500px;
+        height: 200px;
+        margin: 5px 0;
+        padding: 5px 10px;
+    }
+    .show{
+        text-align: center;
+        width: 100px;
+        height: 100px;
+        float: left;
+        border: solid 1px #bbb;
+    }
+    .show img{
+        max-width: 100px;
+        max-height: 100px;
+        margin: 0 auto;
+    }
+    .progress{
+        float: left;
+        margin-left: 20px;
+    }
+    .deleteImg{
+        float: left;
+        height: 100px;
+        margin: 40px 0 0 50px;
+    }
+</style>
+</head>
+<body>
+    <input type="file" name="file" id="getFile"/>
+    <input type="button" name="upload" id="uploadImage" value="上传">
+    <div id="imgControl">
+    </div>
+</body>
+<script src="imageUpload.js"></script>
+<script>
+
+var tmpl = "<div class=\"imageCell\" id=\"theimageid\">" +
+                "<div class=\"show\">" +
+                    "<img src=\"\">" +
+                "</div>" +
+                "<div class=\"progress\">" +
+                    "<progress max=\"100\" value=\"\">" +
+                        "<span>20</span>%" +
+                    "</progress>" +
+                    "<div class=\"tips\">" +
+                    "</div>" +
+                "</div>" +
+                "<div class=\"deleteImg\">" +
+                    "<input type=\"button\" value=\"删除\">" +
+                "</div>" +
+            "</div>";
+
+var uploadPlugin = new imageUpload({
+    maxUploadNum : 3,
+    url : '//10.2.12.97/test/uploadImg/upload.php',
+    onReadyLoadImage : function( id ){
+        var ele = document.createElement('div');
+        ele.innerHTML = tmpl.replace(/theimageid/, 'i' + id);
+        ele = ele.children[0];
+        document.querySelector('#imgControl').appendChild(ele);
+        ele = null;
+    },
+    onImageLoadEnd : function( id , url ){
+        document.querySelector('#i' + id + ' .show img').src = url;
+    },
+    onProgress : function( id, per, speed ){
+        document.querySelector('#i' + id + ' progress').value = per.slice(0, -1);
+        document.querySelector('#i' + id + ' progress span').innerHTML = per;
+    },
+    onSuccess : function( id ){
+        document.querySelector('#i' + id + ' .progress .tips').innerHTML = "上传成功";
+    },
+    onComplete : function(){
+        alert('全部上传成功！');
+        document.querySelector('#imgControl').innerHTML = "";
+    },
+    onDeleteFile : function( id ){
+        
+    }
+
+})
+
+document.querySelector('#getFile').addEventListener('change', function( e ){
+    uploadPlugin.getImages( e );
+});
+document.querySelector('#uploadImage').addEventListener('click', function( e ){
+    uploadPlugin.uploadImages();
+});
+
+</script>
+</html>
