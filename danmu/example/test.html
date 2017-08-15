@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试弹幕</title>
+</head>
+<style>
+#playerWrap{
+    width:700px;
+    height:450px;
+    margin:0 auto;
+    position:relative;
+}
+#player{
+    width:700px;
+    height:450px;
+    position:relative;
+    z-index:10;
+    top:0;
+    background-color:#000;
+}
+.danmuContent{
+    width:100%;
+    height:430px;
+    position:absolute;
+    z-index:20;
+    top:0;
+    overflow: hidden;
+}
+.singleDanmu{
+    position:absolute;
+    display:inline-block;
+    white-space:pre;
+    color:#fff;
+    font-size:25px;
+    line-height:1.125;
+    height:28px;
+}
+#control{
+    width: 700px;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 0;
+}
+#control:after{
+    content: "";
+    clear: both;
+    display: block;
+}
+.dm{
+    width: 545px;
+    height: 24px;
+    font-size: 16px;
+    line-height: 25px;
+    padding: 0 0 0 10px;
+    color: #b3b3b3;
+    margin: 0;
+    display: block;
+    float: left;
+}
+.sendDm{
+    width: 100px;
+    height: 26px;
+    color: #bcbcbc;
+    padding: 0 20px;
+    font-size: 16px;
+    border: solid 1px #bcbcbc;
+    border-left: none;
+    float: left;
+}
+</style>
+<body>
+<div id="playerWrap">
+    <video id="player" src="./test.mp4" controls="controls"></video>
+    <div class="danmuContent"></div>
+</div>
+
+<div id="control">
+    <input type="text" class="dm" placeholder="快来发送弹幕吧">
+    <div class="sendDm">发送</div>
+</div>
+</body>
+<script src="danmuFile.js"></script>
+<script src="../danmu.js"></script>
+<script>
+
+var uid = '103';
+
+function trim( str ){
+    return str.replace('/^\s*|\s*$/g', "");
+}
+
+var myDanmu = new danmu({
+        uid : uid,
+        player : document.querySelector('#player'),
+        danmuBoxEle : document.querySelector('.danmuContent'),
+        danmuHeight : 30,
+        speed : 85,
+        maxLine : 10,
+        opacity : 1,
+        danmuKey : {
+            uid : 'uid',
+            startTime : 'startTime',
+            content : 'content'
+        }
+    
+}, danmuFile);
+myDanmu.init();
+
+
+document.querySelector('.sendDm').addEventListener('click', function(){
+    var input = document.querySelector('.dm');
+    var danmuObj = {}
+    if( trim(input.value) != "" ){
+        danmuObj.content = trim(input.value)
+        danmuObj.startTime = document.querySelector('#player').currentTime;
+        danmuObj.uid = uid;
+    }
+    myDanmu.sendDanmu( danmuObj );
+    input.value = "";
+});
+</script>
+</html>
