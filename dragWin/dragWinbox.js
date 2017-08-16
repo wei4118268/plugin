@@ -15,10 +15,10 @@
  *如果省略第三个参数，则默认窗口移动依靠 left / top
  ******
  *@example
- *	new dragWin( $( '.dragme' ), $( '.dragArea' ) ,'left top' );
+ *	new plugins.dragWin( $( '.dragme' ), $( '.dragArea' ) ,'left top' );
  */
-( function( window, $ ){
-    dragWin = function( win, pullEle, referencePos ){
+( function( window, plugins, $ ){
+    plugins.dragWin = function( win, pullEle, referencePos ){
         var me = this;
 
         //start init arguments
@@ -97,25 +97,24 @@
             })
 
             $pullEle.mousedown( function( event ){
-                var winPosition;
                 event = event || window.event;
+                event.preventDefault ? event.preventDefault() : event.returnValue = false;
                 //ready to drag
                 draging = 1;
                 //original cursor coordination & winbox offset
                 startCor.x = event.pageX;
                 startCor.y = event.pageY;
-                winPosition = $winbox.position();
-                startOff.hor = winPosition[refPos.hor];
-                startOff.ver = winPosition[refPos.ver];
+                startOff.hor = $winbox.css(refPos.hor).slice(0, -2);
+                startOff.ver = $winbox.css(refPos.ver).slice(0, -2);
             } );
 
             //in IE 6/7/8, cursor event can't be captured by window
             if( isIE678 ){
-                $( document ).mousemove( function(){
-                    var event = window.event;
+                $( document ).mousemove( function( event ){
+                    event = event || window.event;
+                    event.returnValue = false;
                     //can do drag
                     if( draging == 1 ){
-                        event.returnValue = false;
                         $( 'body' ).css( 'cursor', 'move' );
                         moveWin( event.pageX, event.pageY );
                     }
@@ -125,8 +124,8 @@
                 } )
             }else{
                 $( window ).mousemove( function( event ){
+                    event.preventDefault();
                     if( draging == 1 ){
-                        event.preventDefault();
                         $( 'body' ).css( 'cursor', 'move' );
                         moveWin( event.pageX, event.pageY );
                     }
@@ -135,6 +134,7 @@
                     $('body').css( 'cursor', 'default' );
                 } )
             }
+
         }
 
         //start private methods
@@ -225,4 +225,4 @@
 
         return me;
     }
-})( window, jQuery )
+})( window, plugins, jQuery )
