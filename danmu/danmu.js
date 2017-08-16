@@ -21,7 +21,8 @@ function danmu( config, danmus ){
         danmuKey : {
             uid : '',
             startTime : '',
-            content : ''
+            content : '',
+            color: ''
         }
     };
 
@@ -87,7 +88,7 @@ function danmu( config, danmus ){
                 singleEle = dEles[dEles.length - 1];
                 translateX = getTranslateX( singleEle );   
                 width = Number( getCss( singleEle, 'width' ).slice(0, -2) );
-                if( -translateX > (width + 80) ){
+                if( -translateX > (width + 50) ){
                     return i;
                 }
             }
