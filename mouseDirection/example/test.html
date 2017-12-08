@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mouse direction</title>
+    <script src="mDirection.js"></script>
+</head>
+<body>
+    <div id="test" style="height:200px;width:200px;position:absolute;top:300px;left:300px;background-color:grey">
+</body>
+<script>
+document.querySelector('#test').addEventListener('mouseenter', function(e){
+    var d = mDirection(e);
+    console.log(d);
+})
+</script>
+</html>

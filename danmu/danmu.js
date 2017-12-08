@@ -85,6 +85,7 @@ function danmu( config, danmus ){
             if( dEles.length == 0 ){
                 return i;
             }else{
+
                 singleEle = dEles[dEles.length - 1];
                 translateX = getTranslateX( singleEle );   
                 width = Number( getCss( singleEle, 'width' ).slice(0, -2) );
@@ -113,13 +114,15 @@ function danmu( config, danmus ){
             timeSpan = _config.player.currentTime - item[_config.danmuKey.startTime];
             //筛选当前播放时间下的弹幕
             if( timeSpan <= 0.2 && timeSpan > 0 ){
+                //缓存弹幕到box中，以方便获取弹幕宽度
+                temp = generateDanmu( item );
+                _config.danmuBoxEle.appendChild(temp);
+                temp.style.top = ( - 1 ) * _config.danmuHeight + 'px';
                 line = getLine();
                 if( line > 0 ){
-                    temp = generateDanmu( item );
                     temp.setAttribute('data-line', line);
                     temp.setAttribute('data-stime', item[_config.danmuKey.startTime]);
                     temp.style.top = (line - 1) * _config.danmuHeight + 'px';
-                    _config.danmuBoxEle.appendChild(temp);
                     temp.addEventListener('transitionend', danmuEnd);
                     setCss3Property( temp, 'transform', 'translateX(' + -(Number( getCss(_config.player, 'width').slice(0, -2) ) + Number( getCss(temp, 'width').slice(0, -2) )) + 'px)' );
                     //_danmus.splice(i, 1);
