@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../template.js"></script>
+</head>
+<body>
+    <div id="my"></div>
+</body>
+<script>
+    var tmpl = '<div class="big"><div class="title"><%=data.title%></div>'+
+        '<% for(var i = 0; i < data.item.length; i++){ %>'+
+        '    <div class="oneList"><%= \'list\' + i + \':\' + data.item[i] %></div>'+
+        '<% } %>'+
+        '</div>';
+    var htmlText = Template.render(tmpl, {data: {title: 'my template', item: ['item1', 'item2']}});
+    document.querySelector('#my').innerHTML = htmlText;
+</script>
+</html>
