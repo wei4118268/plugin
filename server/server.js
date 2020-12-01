@@ -17,7 +17,17 @@ let cTypes = {
 http.createServer( (request, response) => {
     //获取请求的文件名
     let pathName = url.parse(request.url).pathname;
-    let extName = pathName.substring( pathName.lastIndexOf("\.") + 1 );
+    let extName;
+    if(pathName.lastIndexOf("\.") !== -1){
+        extName = pathName.substring( pathName.lastIndexOf("\.") + 1 );
+    }else{
+        extName = "html";
+        if(pathName.substr(-1) !== '/'){
+            pathName += '/';
+        }
+        pathName += "index.html"
+    }
+    console.log(extName)
 
     //输出请求文件名
     console.log('Request for ' + pathName + ' received.');
