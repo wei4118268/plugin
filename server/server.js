@@ -27,13 +27,12 @@ http.createServer( (request, response) => {
         }
         pathName += "index.html"
     }
-    console.log(extName)
 
     //输出请求文件名
     console.log('Request for ' + pathName + ' received.');
 
-    fs.exists( pathName.substring(1), exists => {
-        if( exists ){
+    fs.stat( pathName.substring(1), (err, stats) => {
+        if( stats && stats.isFile() ){
             handleRequest(request, response, pathName, extName);
         }else{
             response.writeHead(404, {'Content-Type': 'text/html'});
@@ -44,6 +43,7 @@ http.createServer( (request, response) => {
     function handleRequest( req, res, pathName, extName ){
         let range = req.headers['range'];
         let contentType = cTypes[extName];
+        let rs;
         if( range ){
             //解析范围请求
             let totalSize = fs.statSync(pathName.substring(1)).size;
@@ -62,21 +62,14 @@ http.createServer( (request, response) => {
                 res.statusCode = 206;
 
                 //读取文件
-                let rs = fs.createReadStream( pathName.substring(1), { start, end } );
-                rs.pipe(res);
-                rs.on('end', () => {
-                    res.end();
-                });
+                rs = fs.createReadStream( pathName.substring(1), { start, end } );
             }
         }else{
             res.writeHead(200, {'Content-Type': contentType});
-            let rs = fs.createReadStream( pathName.substring(1) );
-            rs.pipe(res);
-            rs.on('end', () => {
-                res.end();
-            });
+            rs = fs.createReadStream( pathName.substring(1) );
         }
+        rs.pipe(res);
     }
-} ).listen(80);
+} ).listen(8080);
 
-console.log('Server running at http://127.0.0.1:80/');
+console.log('Server running at http://127.0.0.1:80/8080');
